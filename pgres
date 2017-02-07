@@ -1,0 +1,20 @@
+#!/bin/bash
+
+command=$1
+pids=`pgrep postgres`
+
+start_server() {
+  if [ -z "$pids" ]; then
+    pg_ctl -D /usr/local/var/postgres start
+  else
+    printf "server is already running! \n$pids"
+  fi
+}
+
+if [ "$command" = "start" ]; then
+  start_server
+elif [ "$command" = "stop" ]; then
+  pg_ctl -D /usr/local/var/postgres stop
+else
+  pg_ctl -D /usr/local/var/postgres status
+fi
